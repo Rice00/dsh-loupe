@@ -1,0 +1,8 @@
+# dsh-loupe bundle patch — inserts the `loupe` row into the profile.
+#
+# The row carries no required configuration: the plugin context file defaults to
+# `<DSH home>/loupe/context.md` and the history file to `<DSH home>/loupe/history.jsonl`.
+# A user layer may override this row by id (`loupe`) — the same-id row wins.
+- insert:
+    - id: loupe
+      name: 'dsh-loupe'
