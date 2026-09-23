@@ -12,9 +12,18 @@
   },
   "files": [
     "lib",
+    "assets",
     "cordis.patch.yml",
     "README.md"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rice00/dsh-loupe.git"
+  },
+  "homepage": "https://github.com/Rice00/dsh-loupe#readme",
+  "bugs": {
+    "url": "https://github.com/Rice00/dsh-loupe/issues"
+  },
   "keywords": [
     "dsh",
     "dsh-plugin",
