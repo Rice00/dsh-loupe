@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>dsh-loupe · 三套视觉方向</title>
+<style>
+  :root{
+    --ink:#1b1f27; --ink2:#4b5566; --ink3:#8a93a3;
+    --canvas:#eef0f4; --card:#ffffff; --hair:rgba(20,28,48,.10);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:0 0 72px;
+    background:var(--canvas); color:var(--ink);
+    font:15px/1.75 system-ui,'Microsoft YaHei',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px}
+  .intro{padding:56px 0 8px}
+  .kicker{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.16em;
+    color:#3b6fd4;border:1px dashed rgba(59,111,212,.45);border-radius:999px;padding:3px 12px;
+  }
+  h1{font-size:30px;line-height:1.3;margin:16px 0 10px;letter-spacing:-.01em}
+  .lede{font-size:15px;color:var(--ink2);max-width:640px}
+  .lede b{color:var(--ink)}
+
+  /* ── 每一个方向 ───────────────────────────────────────────────── */
+  .dir{
+    margin-top:48px;padding:28px 26px 24px;border-radius:16px;
+    background:var(--page);
+    border:1px solid rgba(20,28,48,.06);
+  }
+  .dir-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .dir-name{font-size:20px;font-weight:800;letter-spacing:-.01em;color:var(--fg)}
+  .dir-kind{font-size:12.5px;color:var(--mute);letter-spacing:.06em}
+  .dir-sub{margin-top:6px;font-size:14px;color:var(--mute)}
+
+  /* 预览台 */
+  .stage{
+    margin-top:20px;padding:26px 22px;border-radius:12px;
+    background:var(--page2);
+    border:1px solid rgba(20,28,48,.05);
+  }
+  .stage-label{font-size:11.5px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase}
+  .row{display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;margin-top:14px}
+
+  /* 浮标 */
+  .bar{
+    display:inline-flex;gap:2px;padding:4px;border-radius:999px;
+    background:var(--bg);border:1px solid var(--line);box-shadow:var(--shadow);
+  }
+  .bar span{padding:4px 13px;border-radius:999px;font-size:13px;color:var(--mute)}
+  .bar .on{color:var(--accent);font-weight:600}
+
+  /* 浮窗 */
+  .win{
+    width:420px;max-width:100%;border-radius:var(--radius);overflow:hidden;
+    background:var(--bg);color:var(--fg);
+    border:1px solid var(--line);box-shadow:var(--shadow);
+    font-family:var(--body);
+  }
+  .win-head{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 14px;border-bottom:1px solid var(--line);
+    font-family:var(--title);font-size:var(--title-size);letter-spacing:var(--title-track);
+  }
+  .win-head i{font-style:normal;color:var(--mute);letter-spacing:0;font-size:15px}
+  .quote{
+    margin:13px 14px 0;padding:8px 11px;font-size:13.5px;color:var(--mute);
+    border-left:2px solid var(--accent);
+  }
+  .answer{padding:13px 14px;font-size:15px;line-height:1.85}
+  .answer b{font-weight:600}
+  .answer .bul{margin-top:9px}
+  .composer{
+    display:flex;gap:10px;align-items:center;
+    padding:12px 14px;border-top:1px solid var(--line);
+  }
+  .composer .field{flex:1;font-size:13.5px;color:var(--mute)}
+  .composer .go{
+    padding:7px 15px;border-radius:var(--radius);font-size:13px;
+    background:var(--accent);color:#fff;font-family:var(--title);
+  }
+  .meta{margin:0 14px 12px;font-size:11.5px;color:var(--mute)}
+
+  /* 设置面板（迷你） */
+  .panel{
+    width:300px;max-width:100%;border-radius:var(--radius);overflow:hidden;
+    background:var(--bg);color:var(--fg);
+    border:1px solid var(--line);box-shadow:var(--shadow);font-family:var(--body);
+  }
+  .panel-head{padding:10px 14px;font-size:var(--title-size);font-family:var(--title);border-bottom:1px solid var(--line)}
+  .tabs{display:flex;gap:2px;padding:0 12px;border-bottom:1px solid var(--line)}
+  .tabs span{padding:8px 10px;font-size:12.5px;color:var(--mute)}
+  .tabs .on{color:var(--accent);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
+  .items{padding:10px 12px}
+  .item{padding:8px 9px;border-radius:calc(var(--radius) / 2);border:1px solid transparent}
+  .item:hover{background:rgba(0,0,0,.03);border-color:var(--line)}
+  .item .t{font-size:11.5px;color:var(--mute)}
+  .item .q{font-size:13.5px;margin-top:2px}
+  .item .m{font-size:11.5px;color:var(--mute);margin-top:2px}
+
+  /* 说明条 */
+  .facts{display:flex;gap:26px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+  .fact{flex:1 1 200px;min-width:180px}
+  .fact .k{font-size:11.5px;letter-spacing:.12em;color:var(--mute);text-transform:uppercase}
+  .fact .v{margin-top:5px;font-size:14px;color:var(--fg)}
+
+  /* 三套变量 */
+  .A{
+    --page:#e9e6e1; --page2:#f3f0ec; --bg:#fffdfb; --fg:#2e2a26; --mute:#8a8178;
+    --line:#ece7e1; --accent:#8a6f4e; --radius:20px;
+    --shadow:0 10px 30px rgba(78,50,23,.08);
+    --title:'Lanxi-朗宋','Songti SC','SimSun',serif; --title-size:15px; --title-track:.01em;
+    --body:'Lanxi-可宋','Songti SC','SimSun',serif;
+  }
+  .B{
+    --page:#ded9cc; --page2:#e6e2d8; --bg:#f0ede5; --fg:#141414; --mute:#6b6a5f;
+    --line:#d8d4c8; --accent:#c85a3f; --radius:8px;
+    --shadow:0 8px 24px rgba(17,17,17,.10);
+    --title:'Lanxi-颜宋','Songti SC','SimSun',serif; --title-size:20px; --title-track:-.01em;
+    --body:system-ui,'Microsoft YaHei',sans-serif;
+  }
+  .C{
+    --page:#ccd4e2; --page2:#dce1ec; --bg:rgba(255,255,255,.94); --fg:#1b1f27; --mute:#7b8394;
+    --line:rgba(27,31,39,.10); --accent:#3b6fd4; --radius:14px;
+    --shadow:0 22px 56px rgba(20,28,48,.20);
+    --title:'Lanxi-静黑超细',system-ui,sans-serif; --title-size:15px; --title-track:.16em;
+    --body:system-ui,'Microsoft YaHei',sans-serif;
+  }
+
+  .foot{margin-top:56px;padding-top:24px;border-top:1px solid var(--hair);color:var(--ink2);font-size:14px}
+  .foot b{color:var(--ink)}
+  .foot ul{margin:10px 0 0;padding-left:20px}
+  .foot li{margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="intro">
+    <div class="kicker">dsh-loupe · 视觉方向</div>
+    <h1>三套浮窗气质，选一个</h1>
+    <p class="lede">三套用的是<b>同一套 DOM、同一段内容</b>，只换 CSS 变量 —— 所以差异纯粹来自气质，不是结构。挑定之后我再动插件代码（现在没改）。也可以组合，例如「取 A 的底色 + C 的投影」。</p>
+  </div>
+
+  <!-- ═══ A ═══ -->
+  <section class="dir A">
+    <div class="dir-head">
+      <span class="dir-name">A · 暖调极简</span>
+      <span class="dir-kind">warm-minimal</span>
+    </div>
+    <div class="dir-sub">像落在暖灰桌面上的羽毛：宋体正文、极淡阴影、药丸按钮，暖棕作为唯一强调。</div>
+    <div class="stage">
+      <div class="stage-label">浮标 + 浮窗</div>
+      <div class="row">
+        <div>
+          <div class="bar"><span class="on">解释</span><span>设置</span></div>
+          <div class="win" style="margin-top:12px">
+            <div class="win-head"><span>LOUPE</span><i>×</i></div>
+            <div class="quote">缓存命中</div>
+            <div class="answer">
+              <div><b>缓存命中（cache hit）</b>指请求的数据或内容在缓存里找到了，可以直接使用缓存副本，不必回源或重新计算。</div>
+              <div class="bul">· 好处：降低延迟、减轻后端压力<br>· 反面：<b>缓存未命中（cache miss）</b>需回源获取<br>· 常见于：CPU 缓存、浏览器、CDN、数据库</div>
+            </div>
+            <div class="meta">461 字 · 首字 544ms · off</div>
+            <div class="composer"><span class="field">请解释下面这段内容。</span><span class="go">发送</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="stage-label" style="margin-bottom:12px">设置面板</div>
+          <div class="panel">
+            <div class="panel-head">LOUPE · 历史</div>
+            <div class="tabs"><span class="on">历史</span><span>参数</span><span>上下文</span><span>诊断</span></div>
+            <div class="items">
+              <div class="item"><div class="t">9/22 15:18</div><div class="q">「缓存命中」→ 请求的数据在缓存里找到了…</div><div class="m">461 字 · 首字 544ms</div></div>
+              <div class="item"><div class="t">9/22 14:59</div><div class="q">「loupe」→ 本项目里专指这个划词解释浮窗插件…</div><div class="m">67 字 · 首字 612ms</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="fact"><div class="k">气质</div><div class="v">安静、耐读、最不抢注意力</div></div>
+      <div class="fact"><div class="k">适合</div><div class="v">解释常常几百字，宋体长读最舒服</div></div>
+      <div class="fact"><div class="k">代价</div><div class="v">个性偏弱，和宿主界面对比度低</div></div>
+    </div>
+  </section>
+
+  <!-- ═══ B ═══ -->
+  <section class="dir B">
+    <div class="dir-head">
+      <span class="dir-name">B · 编辑杂志</span>
+      <span class="dir-kind">editorial-minimal</span>
+    </div>
+    <div class="dir-sub">像翻阅精装商业杂志：奶白纸底、衬线大标题、发丝线分隔，砖红只出现在一处。</div>
+    <div class="stage">
+      <div class="stage-label">浮标 + 浮窗</div>
+      <div class="row">
+        <div>
+          <div class="bar"><span class="on">解释</span><span>设置</span></div>
+          <div class="win" style="margin-top:12px">
+            <div class="win-head"><span>LOUPE</span><i>×</i></div>
+            <div class="quote">缓存命中</div>
+            <div class="answer">
+              <div><b>缓存命中（cache hit）</b>指请求的数据或内容在缓存里找到了，可以直接使用缓存副本，不必回源或重新计算。</div>
+              <div class="bul">· 好处：降低延迟、减轻后端压力<br>· 反面：<b>缓存未命中（cache miss）</b>需回源获取<br>· 常见于：CPU 缓存、浏览器、CDN、数据库</div>
+            </div>
+            <div class="meta">461 字 · 首字 544ms · off</div>
+            <div class="composer"><span class="field">请解释下面这段内容。</span><span class="go">发送</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="stage-label" style="margin-bottom:12px">设置面板</div>
+          <div class="panel">
+            <div class="panel-head">LOUPE · 历史</div>
+            <div class="tabs"><span class="on">历史</span><span>参数</span><span>上下文</span><span>诊断</span></div>
+            <div class="items">
+              <div class="item"><div class="t">9/22 15:18</div><div class="q">「缓存命中」→ 请求的数据在缓存里找到了…</div><div class="m">461 字 · 首字 544ms</div></div>
+              <div class="item"><div class="t">9/22 14:59</div><div class="q">「loupe」→ 本项目里专指这个划词解释浮窗插件…</div><div class="m">67 字 · 首字 612ms</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="fact"><div class="k">气质</div><div class="v">有主张、有权威感、被一眼认出</div></div>
+      <div class="fact"><div class="k">适合</div><div class="v">把解释当成"一段可读的读物"</div></div>
+      <div class="fact"><div class="k">代价</div><div class="v">砖红在解释场景略抢戏；小圆角降低"浮层感"</div></div>
+    </div>
+  </section>
+
+  <!-- ═══ C ═══ -->
+  <section class="dir C">
+    <div class="dir-head">
+      <span class="dir-name">C · 玻璃浮层</span>
+      <span class="dir-kind">现代 App 面板</span>
+    </div>
+    <div class="dir-sub">接近纯白的半透明底 + 强投影「浮起来」，大圆角、极细描边，蓝色作唯一强调。</div>
+    <div class="stage">
+      <div class="stage-label">浮标 + 浮窗</div>
+      <div class="row">
+        <div>
+          <div class="bar"><span class="on">解释</span><span>设置</span></div>
+          <div class="win" style="margin-top:12px">
+            <div class="win-head"><span>LOUPE</span><i>×</i></div>
+            <div class="quote">缓存命中</div>
+            <div class="answer">
+              <div><b>缓存命中（cache hit）</b>指请求的数据或内容在缓存里找到了，可以直接使用缓存副本，不必回源或重新计算。</div>
+              <div class="bul">· 好处：降低延迟、减轻后端压力<br>· 反面：<b>缓存未命中（cache miss）</b>需回源获取<br>· 常见于：CPU 缓存、浏览器、CDN、数据库</div>
+            </div>
+            <div class="meta">461 字 · 首字 544ms · off</div>
+            <div class="composer"><span class="field">请解释下面这段内容。</span><span class="go">发送</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="stage-label" style="margin-bottom:12px">设置面板</div>
+          <div class="panel">
+            <div class="panel-head">LOUPE · 历史</div>
+            <div class="tabs"><span class="on">历史</span><span>参数</span><span>上下文</span><span>诊断</span></div>
+            <div class="items">
+              <div class="item"><div class="t">9/22 15:18</div><div class="q">「缓存命中」→ 请求的数据在缓存里找到了…</div><div class="m">461 字 · 首字 544ms</div></div>
+              <div class="item"><div class="t">9/22 14:59</div><div class="q">「loupe」→ 本项目里专指这个划词解释浮窗插件…</div><div class="m">67 字 · 首字 612ms</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="fact"><div class="k">气质</div><div class="v">现代、像系统自带面板、与任何主题都容易共存</div></div>
+      <div class="fact"><div class="k">适合</div><div class="v">希望它"是个正经工具"而不是"像张纸"</div></div>
+      <div class="fact"><div class="k">代价</div><div class="v">强投影在浅色宿主上略重；半透明值已按"无毛玻璃"实现</div></div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <b>三套都能跟随 DSH 深浅主题切换</b> —— 深色下把 <code>--bg / --fg / --line</code> 换一组值即可，结构不动；设置面板四页、工作区选择器、诊断页共用同一套变量。
+    <ul>
+      <li><b>我的倾向</b>：A。这个浮窗的主任务是"读"（解释常几百字），宋体长读最舒服，暖调也不会在浅色宿主上显得突兀。</li>
+      <li><b>如果想更像工具</b>：C 与 DSH 自带面板的气质最近。</li>
+      <li><b>如果想一眼认出</b>：B 最有性格，但砖红在解释场景里略微抢戏。</li>
+    </ul>
+    选好告诉我（例如「A」「C，但投影弱一点」「A 的底 + B 的标题」），我再改插件代码。
+  </div>
+
+</div>
+</body>
+</html>
