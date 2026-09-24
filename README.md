@@ -4,9 +4,13 @@
 
 # dsh-loupe
 
-**划词，就问。**
+**轻量DSH划词（句）解释插件**
 
-选中 DSH 对话里的一个词或一句话，浮窗里把它讲明白。不建会话，不碰你的主会话。
+需要**重度长上下文追问**（比如「把我们前面聊的都算上」）时，用作者的另一个插件
+[**dsh-tree-view**](https://github.com/Rice00/dsh-tree-view)：它把对话做成一棵分支树，
+在树里分支、切换版本、提升为正式会话 —— 上下文管够，侧栏仍然只留一条。
+
+选中 DSH 对话里的一个词或一句话，浮窗里把它讲明白。快速，轻量，无额外会话污染。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f7de1.svg)](./LICENSE)
 [![Platform: DSH web](https://img.shields.io/badge/platform-DSH%20web-334eac.svg)](#安装)
@@ -18,11 +22,11 @@
 
 ---
 
-选中一个词，浮标就冒出来：
+选中一个词，将显示面板：
 
 ![选中「幂等（idempotent）」后，选区下方浮出「解释 / 设置」](assets/screenshot-select.png)
 
-点「解释」，浮窗直接开问，顶上钉住你选的那句：
+点「解释」，浮窗直接开问：
 
 ![浮窗给出解释，顶部钉住选中的原句，底部是耗时统计](assets/screenshot-window.png)
 
@@ -40,9 +44,7 @@
 | 🔑 **零配置** | 借用宿主的 llm 服务，不用填 API key。 |
 | 🫧 **玻璃质感** | 半透明 + 背景模糊，可在参数页关掉。 |
 
-## 设计取舍
-
-这四点不是巧合，是四处刻意做的取舍。
+## 插件特点
 
 **快。** 点「解释」的时候它已经在问了 —— 浮窗打开即提交，不用再按一次发送。推理档默认 `off`，实测三次首字 **503ms / 544ms / 634ms**，整段答案 1.7–2.5 秒。它也不把 agent 的全量上下文拖进来，只发你选的那句加一本小本子；小本子放在 prompt 的固定位置，还能吃到宿主的 prompt 缓存。
 
@@ -195,4 +197,6 @@ Issue 和 PR 都欢迎。
 
 <div align="center">
 <sub>loupe = 钟表匠的寸镜，用来看清一处细节。</sub>
+
+MIT License © dsh-job-progress contributors
 </div>
