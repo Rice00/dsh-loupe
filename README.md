@@ -6,11 +6,10 @@
 
 **轻量DSH划词（句）解释插件**
 
-需要**重度长上下文追问**（比如「把我们前面聊的都算上」）时，用作者的另一个插件
-[**dsh-tree-view**](https://github.com/Rice00/dsh-tree-view)：它把对话做成一棵分支树，
-在树里分支、切换版本、提升为正式会话 —— 上下文管够，侧栏仍然只留一条。
-
 选中 DSH 对话里的一个词或一句话，浮窗里把它讲明白。快速，轻量，无额外会话污染。
+
+>若需**重度长上下文追问**，推荐使用我的另一款插件
+[**dsh-tree-view**](https://github.com/Rice00/dsh-tree-view)进行树分支询问。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f7de1.svg)](./LICENSE)
 [![Platform: DSH web](https://img.shields.io/badge/platform-DSH%20web-334eac.svg)](#安装)
@@ -198,5 +197,5 @@ Issue 和 PR 都欢迎。
 <div align="center">
 <sub>loupe = 钟表匠的寸镜，用来看清一处细节。</sub>
 
-MIT License © dsh-job-progress contributors
+MIT License © dsh-loupe contributors
 </div>
