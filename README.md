@@ -11,6 +11,7 @@
 >若需**重度长上下文追问**，推荐使用我的另一款插件
 [**dsh-tree-view**](https://github.com/Rice00/dsh-tree-view)进行树分支询问。
 
+[![npm](https://img.shields.io/npm/v/dsh-loupe?color=2f7de1)](https://www.npmjs.com/package/dsh-loupe)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f7de1.svg)](./LICENSE)
 [![Platform: DSH web](https://img.shields.io/badge/platform-DSH%20web-334eac.svg)](#安装)
 [![Zero config](https://img.shields.io/badge/setup-zero%20config-1c7a54.svg)](#常见问题)
@@ -66,11 +67,11 @@ dsh plugin --profile <profile> add link:/abs/path/to/dsh-loupe
 
 `link:` 是活链接，改源码立刻生效；代价是装完之后不能挪动这个目录。想连文件一起复制走用 `file:`，以后每次改都要重装。
 
-### 从 GitHub 或 npm
+### 从 npm 或 GitHub
 
 ```bash
-dsh plugin --profile <profile> add github:Rice00/dsh-loupe
-dsh plugin --profile <profile> add dsh-loupe        # 发布到 npm 之后
+dsh plugin --profile <profile> add dsh-loupe                    # npm
+dsh plugin --profile <profile> add github:Rice00/dsh-loupe      # GitHub
 ```
 
 ### 让 AI 助手帮你装
@@ -78,7 +79,9 @@ dsh plugin --profile <profile> add dsh-loupe        # 发布到 npm 之后
 ```
 请帮我安装 DSH 插件 dsh-loupe：
 
-1) 装进 web profile，两种来源任选：
+1) 装进 web profile，三种来源任选：
+     从 npm：
+       dsh plugin --profile web add dsh-loupe
      从 GitHub：
        dsh plugin --profile web add github:Rice00/dsh-loupe
      或从本地检出（填这个文件夹的绝对路径）：
@@ -183,7 +186,7 @@ dsh plugin --profile <profile> remove dsh-loupe
 - [ ] 保存后的会话自动命名
 - [ ] 历史检索与分页
 - [ ] 推理过程可折叠
-- [ ] 发布到 npm
+- [x] 发布到 npm
 - [ ] English README
 
 ## 参与贡献
