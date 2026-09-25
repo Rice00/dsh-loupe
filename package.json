@@ -1,6 +1,6 @@
 {
   "name": "dsh-loupe",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Select text in a DSH conversation and explain it in a floating window: independent channel, no session pollution, pinnable to a real session. / 划词解释浮窗：选中即弹、独立通道、不污染主会话、可固定成正式会话。",
   "type": "module",
   "main": "lib/index.js",
