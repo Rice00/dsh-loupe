@@ -43,7 +43,7 @@ Click "Explain" and the floating window starts asking right away:
 | 🔁 **Accumulates on its own** | After each explanation it keeps "what was selected → what came out", so the same word sharpens with use. |
 | 🗂️ **Everything archived** | Every exchange goes into history, searchable by keyword and paged; click one and it is restored into the window for more questions. |
 | 📌 **Pinnable as a session** | An explanation worth keeping: pick a target workspace, save it, and it becomes a real session in the left-hand list, auto-named "Selection · <word>". |
-| 🌐 **Bilingual UI** | Interface and prompt in Chinese or English; `auto` follows the host interface language, then the browser language, and can be pinned. |
+| 🌐 **Bilingual UI** | Interface and prompt in Chinese or English; `auto` uses the host's language preference (`locale.preference`), falling back to the browser language, and can be pinned. |
 | 🧠 **Collapsible reasoning** | The model's own reasoning is folded away by default; expand it when you want it, and it survives a restore from history. |
 | 🌗 **Follows the theme** | Light/dark and skin follow the host; when the host ships no design tokens it falls back to the OS preference. |
 | 🔑 **Zero config** | Borrows the host's `llm` service; there is no API key to fill in. |
@@ -126,7 +126,7 @@ The "Diagnostics" tab in Settings carries drag-event counters — drag once and 
 It needs browser support for `color-mix`. Without it the window falls back to a solid background and everything else keeps working.
 
 **Can I switch the interface to English?**
-Yes — pick `en` under "Language" in Settings and the interface and the prompt switch immediately. `auto` follows the host interface language, then the browser language. The theme needs no switch: it follows the host.
+Yes — pick `en` under "Language" in Settings and the interface and the prompt switch immediately. `auto` uses the host's language preference, falling back to the browser language (the host page's `lang` attribute is a static template value). The theme needs no switch: it follows the host.
 
 ## Settings
 
@@ -139,7 +139,7 @@ Change these in the Settings page, under "Params"; the next explanation picks th
 | Glass look | `on` | `on` / `off`. Translucent + background blur; off is a solid background, which drags more smoothly. |
 | Auto-accumulation | `on` | `on` / `off`. Keeps each conclusion in `context.md`. |
 | Context cap | `2200` | `800` / `2200` / `4000` / `8000` characters. How much of `context.md` gets injected. |
-| Language | `auto` | `auto` / `zh` / `en`. `auto` follows the host interface language, then the browser language; only the interface and the prompt are translated. |
+| Language | `auto` | `auto` / `zh` / `en`. `auto` uses the host's language preference (`locale.preference`), falling back to the browser language (the host page's `lang` attribute is a static template value and is never used). Only the interface and the prompt are translated. |
 
 ## Data and routes
 
