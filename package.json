@@ -33,6 +33,10 @@
     "loupe"
   ],
   "license": "MIT",
+  "author": "Rice00",
+  "engines": {
+    "node": ">=22.19.0"
+  },
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
