@@ -6,6 +6,8 @@
 
 **轻量DSH划词（句）解释插件**
 
+简体中文 | [English](README.en.md)
+
 选中 DSH 对话里的一个词或一句话，浮窗里把它讲明白。快速，轻量，无额外会话污染。
 
 >若需**重度长上下文追问**，推荐使用我的另一款插件
@@ -39,8 +41,11 @@
 | 🔌 **不建会话** | 只发一次模型请求：不写会话日志、不注册工具，左侧列表不会变脏。 |
 | 📚 **自带上下文** | 用插件自己的 `context.md`，不拖 agent 的全量上下文 —— 更快也更省。 |
 | 🔁 **自动累积** | 每次解释后沉淀「选了什么 → 得出什么」，同一个词越问越准。 |
-| 🗂️ **全量留档** | 每次问答都进历史，点一条就复原回浮窗接着问。 |
-| 📌 **可存成正式会话** | 值得留下的解释，选个目标工作区一存，就成了左侧列表里的真会话。 |
+| 🗂️ **全量留档** | 每次问答都进历史，可按关键词搜索、分页翻；点一条就复原回浮窗接着问。 |
+| 📌 **可存成正式会话** | 值得留下的解释，选个目标工作区一存，就成了左侧列表里的真会话，并自动命名为「划词 · <词>」。 |
+| 🌐 **中英双语** | 界面与提示词中英双语，`auto` 跟随宿主界面语言、其次浏览器语言，也可以手动锁定。 |
+| 🧠 **推理可折叠** | 模型自己的推理过程默认收起，想看再展开；从历史复原时它还在。 |
+| 🌗 **跟随主题** | 深浅主题与皮肤跟随宿主；宿主没提供设计令牌时按系统深浅兜底。 |
 | 🔑 **零配置** | 借用宿主的 llm 服务，不用填 API key。 |
 | 🫧 **玻璃质感** | 半透明 + 背景模糊，可在参数页关掉。 |
 
@@ -118,6 +123,9 @@ dsh plugin --profile <profile> add github:Rice00/dsh-loupe      # GitHub
 **玻璃质感没效果？**
 需要浏览器支持 `color-mix`。不支持时自动退回实底，其余功能照常。
 
+**界面能换英文吗？**
+能。设置页「参数」里的「界面语言」选 `en`，界面与提示词立刻变英文；`auto` 跟随宿主界面语言，宿主没声明时用浏览器语言。主题不用选，它自己跟随宿主。
+
 ## 参数
 
 设置页「参数」里改，下一次解释就生效。
@@ -129,6 +137,7 @@ dsh plugin --profile <profile> add github:Rice00/dsh-loupe      # GitHub
 | 玻璃质感 | `on` | `on` / `off`。半透明 + 背景模糊；关掉是实底，拖动更跟手。 |
 | 自动累积 | `on` | `on` / `off`。把每次结论沉淀进 `context.md`。 |
 | 上下文上限 | `2200` | `800` / `2200` / `4000` / `8000` 字符。`context.md` 注入的长度上限。 |
+| 界面语言 | `auto` | `auto` / `zh` / `en`。`auto` 先跟随宿主界面语言，再退到浏览器语言；只翻译界面与提示词。 |
 
 ## 数据与接口
 
@@ -146,8 +155,8 @@ history.jsonl  全部问答记录（只追加，不重写；超过 8MB 时只读
 
 ```
 GET  /plugins/dsh-loupe/probe     诊断：宿主能力 / 模型解析 / context 可写性 / 拖动事件 / 工作区探测
-POST /plugins/dsh-loupe/explain   解释调用（SSE：meta / thinking / first / delta / done / error）
-GET  /plugins/dsh-loupe/history   历史（最新在前）
+POST /plugins/dsh-loupe/explain   解释调用（SSE：meta / thinking / reasoning / first / delta / done / error）
+GET  /plugins/dsh-loupe/history   历史（最新在前；?limit= &offset= &q= 搜索与分页）
 GET  /plugins/dsh-loupe/context   读上下文
 POST /plugins/dsh-loupe/context   写上下文（64 KB 上限）
 POST /plugins/dsh-loupe/pin       保存成正式会话（客户端会话服务不可用时的兜底）
@@ -183,11 +192,11 @@ dsh plugin --profile <profile> remove dsh-loupe
 - [x] 历史留档与一键复原
 - [x] 保存成正式会话（自己选工作区）
 - [x] 玻璃质感开关
-- [ ] 保存后的会话自动命名
-- [ ] 历史检索与分页
-- [ ] 推理过程可折叠
+- [x] 保存后的会话自动命名
+- [x] 历史检索与分页
+- [x] 推理过程可折叠
 - [x] 发布到 npm
-- [ ] English README
+- [x] English README
 
 ## 参与贡献
 
